@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>俄罗斯方块 - 客服</title>
+    <style>
+        /* 全局样式：设置字体、背景颜色和基本间距 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* 浅灰色背景 */
+        }
+
+        /* 页面头部样式 */
+        header {
+            background-color: #00ffcc; /* 浅蓝绿色 */
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            color: white; /* 白色字体 */
+        }
+
+        /* 聊天容器样式：控制整体布局和边框 */
+        .chat-container {
+            display: flex;
+            flex-direction: column; /* 垂直排列 */
+            justify-content: space-between; /* 元素上下对齐 */
+            height: 90vh; /* 占据视口的90%高度 */
+            width: 100%;
+            max-width: 600px; /* 最大宽度600px */
+            margin: 20px auto; /* 居中 */
+            background: white; /* 白色背景 */
+            border-radius: 10px; /* 圆角 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+            overflow: hidden; /* 超出部分隐藏 */
+        }
+
+        /* 聊天头部样式 */
+        .chat-header {
+            background: #00ffcc; /* 浅蓝绿色 */
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            color: white;
+        }
+
+        /* 聊天内容区域 */
+        .chat-body {
+            flex: 1; /* 占据剩余空间 */
+            padding: 20px;
+            overflow-y: auto; /* 允许垂直滚动 */
+        }
+
+        /* 单条消息的样式 */
+        .chat-body .message {
+            margin-bottom: 15px; /* 消息之间的间距 */
+        }
+
+        /* 用户消息靠右显示 */
+        .message.user {
+            text-align: right;
+        }
+
+        /* 消息内容样式 */
+        .message .content {
+            display: inline-block; /* 行内块状元素 */
+            padding: 10px 15px; /* 内边距 */
+            border-radius: 10px; /* 圆角 */
+            font-size: 14px;
+        }
+
+        /* 用户消息背景色 */
+        .message.user .content {
+            background: #00ffcc; /* 浅蓝绿色 */
+            color: white; /* 白色字体 */
+        }
+
+        /* 客服消息背景色 */
+        .message.bot .content {
+            background: #f4f4f4; /* 浅灰色 */
+            color: black; /* 黑色字体 */
+        }
+
+        /* 聊天底部样式 */
+        .chat-footer {
+            padding: 10px;
+            background: #f4f4f4; /* 浅灰色 */
+            display: flex;
+            gap: 10px; /* 元素间距 */
+        }
+
+        /* 输入框样式 */
+        .chat-footer input[type="text"] {
+            flex: 1; /* 占据剩余空间 */
+            padding: 10px;
+            border: 1px solid #ddd; /* 边框颜色 */
+            border-radius: 5px; /* 圆角 */
+            font-size: 14px;
+        }
+
+        /* 按钮样式 */
+        .chat-footer button {
+            padding: 10px 15px;
+            border: none; /* 去掉默认边框 */
+            background: #00ffcc; /* 浅蓝绿色 */
+            color: white; /* 白色字体 */
+            border-radius: 5px; /* 圆角 */
+            cursor: pointer; /* 鼠标变为手形 */
+            font-size: 14px;
+        }
+
+        /* 按钮悬停效果 */
+        .chat-footer button:hover {
+            background: #00e6b8; /* 颜色稍微加深 */
+        }
+    </style>
+</head>
+<body>
+<!-- 页面头部 -->
+<header>
+    俄罗斯方块 - 客服
+</header>
+
+<!-- 聊天主容器 -->
+<div class="chat-container">
+    <!-- 聊天头部 -->
+    <div class="chat-header">
+        欢迎咨询
+    </div>
+
+    <!-- 聊天内容区域 -->
+    <div class="chat-body" id="chat-body">
+        <!-- 初始的客服消息 -->
+        <div class="message bot">
+            <span class="content">您好，我是客服小方，有什么我可以帮您的吗？</span>
+        </div>
+    </div>
+
+    <!-- 聊天底部 -->
+    <div class="chat-footer">
+        <input type="text" id="user-input" placeholder="输入您的问题..."> <!-- 输入框 -->
+        <button onclick="sendMessage()">发送</button> <!-- 发送按钮 -->
+    </div>
+</div>
+
+<script>
+    // 用户发送消息的功能
+    function sendMessage() {
+        const userInput = document.getElementById('user-input'); // 获取输入框
+        const chatBody = document.getElementById('chat-body'); // 获取聊天内容区域
+
+        // 如果输入框内容为空，不执行操作
+        if (userInput.value.trim() === "") return;
+
+        // 创建用户消息
+        const userMessage = document.createElement('div');
+        userMessage.classList.add('message', 'user'); // 添加样式类
+        userMessage.innerHTML = `<span class="content">${userInput.value}</span>`;
+        chatBody.appendChild(userMessage); // 添加到聊天内容区域
+
+        // 创建客服自动回复消息
+        const botMessage = document.createElement('div');
+        botMessage.classList.add('message', 'bot'); // 添加样式类
+        botMessage.innerHTML = `<span class="content">抱歉，我暂时无法理解您的问题。</span>`;
+        chatBody.appendChild(botMessage); // 添加到聊天内容区域
+
+        // 清空输入框
+        userInput.value = "";
+
+        // 滚动到最新消息
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+</script>
+</body>
+</html>
